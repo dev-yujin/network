@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    <h3>
+        Feedback List
+    </h3>
+{% endblock title %}
+
+{% block content %}
+    <p>
+        <a href="{% url 'create' %}">+ Create New</a>
+    </p>
+
+    <table class="table">
+        <tr><th>Id</th><th>Name</th><th>Email</th><th>Comment</th></tr>
+        {% for item in feedbacks %}
+            <tr>
+                <td>
+                    <!-- <a href="{% url 'edit' id=item.id %}">{{ item.id }}</a> -->
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.comment }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}
