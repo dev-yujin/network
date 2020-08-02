@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- var someVarName = "value";
+localStorage.setItem("someVarKey", someVarName); -->
+
+<html>
+	<head>
+		<meta http-equiv="content-Type" content="text/html"; charset=UTF-8>
+		<title>Title</title>
+		<style>
+			body {
+			  background-image: url('/static/mafia/mafia.jpg');
+
+			}
+			h1 {
+			  color: white;
+			  font-size: 120px;
+			  text-align: center;
+			  margin-top: 250px;
+			  margin-bottom: 0px;
+			}
+			p {
+			  text-align: center;
+			  margin-top: 0px;
+			}
+
+		  </style>
+	</head>
+
+	<body>
+		<script>
+	  var numVarName = 0;
+	  localStorage.setItem("numVarKey", numVarName);
+	  </script>
+		<div class="contain">
+			<h1>MAFIA</h1>
+
+			<form action="{% url 'mafia:regCon' %}" method="post">
+			{% csrf_token %}
+				<p><input type="text" name="name" placeholder="ID" autofocus></p>
+				<p><input type = "text"readonly name="job" value={{job}}></p>
+				<p><input type="hidden" name="votes" value=0></p>
+				<p><input type="hidden" name="life" value=True></p>
+				<p ><input type="file" name="img"></p>
+				<p><input type="submit" name="Register" value="게임 참가"></p>
+				<!— <script>alert("제 직업은 "+ document.getElementById('joob').value + " 입니다.");</script> —>
+			</form>
+		</div>
+	</body>
+</html>

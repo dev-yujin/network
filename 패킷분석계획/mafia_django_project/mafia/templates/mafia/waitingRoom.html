@@ -1,0 +1,87 @@
+<!-- 게임대기화면 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>게임 대기 화면</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+  <script language="JavaScript">
+  var SetTime1 = 1;		// 최초 설정 시간(기본 : 초)
+    function msg_time1() {	// 1초씩 카운트
+        m = Math.floor(SetTime1 / 60) + "분 " + (SetTime1 % 60) + "초";	// 남은 시간 계산
+
+        var msg = " 00 ";
+
+        console.log(msg)		// div 영역에 보여줌
+
+        SetTime1--;					// 1초씩 감소
+
+        if (SetTime1 < 0) {			// 시간이 종료 되었으면..
+
+            clearInterval(tid);		// 타이머 해제
+            location.reload(true);
+        }
+
+    }
+    //window.onload = function TimerStart1(){ tid=setInterval('msg_time1()',1000) };
+    var SetTime2 = 3;
+    function msg_time2() {	// 1초씩 카운트
+        // m = Math.floor(SetTime2 / 60) + "분 " + (SetTime2 % 60) + "초";	// 남은 시간 계산
+        m = (SetTime2 % 60) + "초";	// 남은 시간 계산
+
+        var msg = "<font color='red'>" + m + "</font> 후에 게임이 시작됩니다.";
+
+		document.all.ViewTimer.innerHTML = msg;		// div 영역에 보여줌
+
+        if((SetTime2 % 60) == 10){
+        //   alert("10초 후에 게임이 시작됩니다.")
+            document.all.ViewTimer.innerHTML = msg;
+            console.log(msg)
+        }
+        console.log(msg)  		// div 영역에 보여줌
+
+        SetTime2--;					// 1초씩 감소
+
+        if (SetTime2 < 0) {			// 시간이 종료 되었으면..
+            clearInterval(tid);		// 타이머 해제
+            location.href = "/mafia/game/"
+        }
+
+    }
+    //window.onload = function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+
+</script>
+
+</head>
+<body>
+    <div class="choice maifa" style = "margin-left: 150px; margin-top: 100px">
+        <!-- DB에 있는 만큼 실행 -->
+        {% for candidate in candidates %}
+        <img src="/static/mafia/man.png" style = "margin-left: 20px; margin-right: 20px; margin-bottom: 30px; margin-top: 30px; width:180px; height:180px; float: left;">
+        {% endfor %}
+        <div style="clear: both;"></div>
+        {% for candidate in candidates %}
+        <b style = "margin-left: 90px; margin-right: 105px; margin-bottom: 10px; margin-top: 10px;">{{candidate.name}}</b>
+        {% endfor %}
+
+        <div style="clear: both; height: 100px "></div>
+
+    </div>
+    {% if candidates.count < 5 %}
+            <script>
+            function TimerStart1(){ tid=setInterval('msg_time1()',1000) };
+            TimerStart1();
+            </script>
+        {% else %}
+            <!— <div id="ViewTimer2"></div> —>
+            <script>function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+            TimerStart2();
+            </script>
+            <div style="text-align:center;" id="ViewTimer"></div>
+        {% endif %}
+</body>
