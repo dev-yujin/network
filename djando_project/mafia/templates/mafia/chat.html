@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <script language="JavaScript">
+  var SetTime1 = 1;		// 최초 설정 시간(기본 : 초)
+    function msg_time1() {	// 1초씩 카운트
+        m = Math.floor(SetTime1 / 60) + "분 " + (SetTime1 % 60) + "초";	// 남은 시간 계산
+
+        var msg = " 00 ";
+
+        console.log(msg)		// div 영역에 보여줌
+
+        SetTime1--;					// 1초씩 감소
+
+        if (SetTime1 < 0) {			// 시간이 종료 되었으면..
+
+            clearInterval(tid);		// 타이머 해제
+            location.reload(true);
+        }
+    }
+    //window.onload = function TimerStart1(){ tid=setInterval('msg_time1()',1000) };
+    var SetTime2 = 180;
+    function msg_time2() {	// 1초씩 카운트
+        m = Math.floor(SetTime2 / 60) + "분 " + (SetTime2 % 60) + "초";	// 남은 시간 계산
+
+        var msg = "현재 남은 시간은 " + m + "입니다.";
+        if((SetTime2 % 60) == 10){
+          alert("3분 후 투표가 시작됩니다..")
+        }
+        console.log(msg)  		// div 영역에 보여줌
+
+        SetTime2--;					// 1초씩 감소
+
+        if (SetTime2 < 0) {			// 시간이 종료 되었으면..
+            clearInterval(tid);		// 타이머 해제
+            location.href = "/mafia/game/"
+        }
+
+    }
+    //window.onload = function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+
+</script>
+</head>
+<body style="text-align: right">
+    <img src="/static/mafia/mafia.jpg" width="1500" height="210">
+    <textarea id="chat-log" cols="35" rows="45"></textarea><br/>
+    <input id="chat-message-input" type="text" size="10"/><br/>
+    <input id="chat-message-submit" type="button" value="채팅하기"/>
+    <script>function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+            TimerStart2();
+    </script>
+</body>
+<script>
+    var roomName = {{ room_name_json }};
+
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/mafia/' + roomName + '/');
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        document.querySelector('#chat-log').value += (message + '\n');
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        var messageInputDom = document.querySelector('#chat-message-input');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+
+        messageInputDom.value = '';
+    };
+</script>
+    <style>
+        body {
+        background-color:black;
+        }
+    </style>
+</html>

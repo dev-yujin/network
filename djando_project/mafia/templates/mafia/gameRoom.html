@@ -1,0 +1,62 @@
+<!-- 게임 화면 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>마피아 투표하기</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container" style="margin-left: 100px; margin-right: 20px; margin-bottom: 30px; margin-top: 30px; width: 500px;">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td><B>이미지</B></td>
+            <td><B>이름</B></td>
+            <!-- <td><B>직업</B></td> -->
+            <!-- <td><B>득표수</B></td> -->
+            <td><B>투표하기</B></td>
+            <!-- <td><B>생명</B></td> -->
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for candidate in candidates %}
+        <script>cnt = cnt + 1;</script>
+        {% if checkVic_cnt == 1 %}
+        <form action = "/mafia/vic_mafia/" method="post">
+        {% endif %}
+        <tr>
+            <!-- <td>{{ forloop.counter }}</td> -->
+            <td><img src= "/static/mafia/man.png" width=100 height=100></td>
+            <td>{{candidate.name}}</td>
+            <!-- <td>{{candidate.job}}</td> -->
+            <!-- <td>{{candidate.votes}}</td> -->
+            <td>
+                <form action = "/mafia/polls/" method="post">
+                <!--poll이라는 함수에 id값을 url경로를 포함하여 전달, 추후 urls.py와 views.py에서 처리해야함-->
+                {% csrf_token %}
+                <!--아무나 이와같은 포스트를 할 수 없도록 하고 해당 토큰을 가지고있는 클라이언트만 포스트 할 수 있도록 함-->
+                    {% if candidate.life %}
+                        <button name="choice" value="{{candidate.id}}">선택</button>
+                    {% else %}
+                        {% if candidate.job == "mafia" %}
+                          <form action = "/mafia/vic_citizen/" method="post">
+                        {% endif %}
+                        <button name="choice" value="{{candidate.id}}" disabled>선택</button>
+                    {% endif %}
+                </form>
+            </td>
+            <td>{{candidate.life}}</td>
+        </tr>
+        {% endfor %}
+        <tbody>
+    </table>
+    <form action="{% url 'mafia:index' %}" method="post">
+        {% csrf_token %}
+        <p><input type="submit" value="채팅 시작"></p>
+    </form>
+</body>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MAFIA</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        background-color:black;
+      }
+      h1 {
+        color: white;
+        font-size: 120px;
+        text-align: center;
+        margin-top: 250px;
+        margin-bottom: 0px;
+      }
+      p {
+        text-align: center;
+        margin-top: 0px;
+      }
+
+    </style>
+    <script language="JavaScript">
+  var SetTime1 = 1;		// 최초 설정 시간(기본 : 초)
+    function msg_time1() {	// 1초씩 카운트
+        m = Math.floor(SetTime1 / 60) + "분 " + (SetTime1 % 60) + "초";	// 남은 시간 계산
+
+        var msg = " 00 ";
+
+        console.log(msg)		// div 영역에 보여줌
+
+        SetTime1--;					// 1초씩 감소
+
+        if (SetTime1 < 0) {			// 시간이 종료 되었으면..
+
+            clearInterval(tid);		// 타이머 해제
+            location.reload(true);
+        }
+
+    }
+    //window.onload = function TimerStart1(){ tid=setInterval('msg_time1()',1000) };
+    var SetTime2 = 5;
+    function msg_time2() {	// 1초씩 카운트
+        m = Math.floor(SetTime2 / 60) + "분 " + (SetTime2 % 60) + "초";	// 남은 시간 계산
+
+        var msg = "현재 남은 시간은 " + m + "입니다.";
+        if((SetTime2 % 60) == 10){
+          alert("5초 후 채팅이 시작됩니다..")
+        }
+        console.log(msg)  		// div 영역에 보여줌
+
+        SetTime2--;					// 1초씩 감소
+
+        if (SetTime2 < 0) {			// 시간이 종료 되었으면..
+            clearInterval(tid);		// 타이머 해제
+            location.href = "/mafia/chat/"
+        }
+
+    }
+    //window.onload = function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+
+</script>
+  </head>
+  <body>
+    <img src="/static/mafia/mafia.jpg" width = 1500px; height = 210px;">
+    <div class="contain">
+      <h1>MAFIA</h1>
+            <!— <div id="ViewTimer2"></div> —>
+            <script>function TimerStart2(){ tid=setInterval('msg_time2()',1000) };
+            TimerStart2();
+            </script>
+            <div style="text-align:center;" id="ViewTimer"></div>
+    </div>
+
+  </body>
+</html>
